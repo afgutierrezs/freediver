@@ -1,13 +1,10 @@
-package com.android.freediver
+package com.android.freediver.ui.home
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.android.freediver.util.WatchState
 
-class MainActivityViewModel: ViewModel() {
-
-    enum class WatchState {
-        Running, Stopped
-    }
+class MainActivityViewModel : ViewModel() {
 
     companion object {
         private val TAG = MainActivityViewModel::class.java.simpleName
@@ -17,7 +14,6 @@ class MainActivityViewModel: ViewModel() {
 
     init {
         Log.d(TAG, "MainActivityViewModel created!")
-
     }
 
     override fun onCleared() {
@@ -25,20 +21,23 @@ class MainActivityViewModel: ViewModel() {
         Log.d(TAG, "MainActivityViewModel destroyed!")
     }
 
-    fun watchAction(){
-        if (watchState == WatchState.Stopped) {
-            startCount()
-        } else if (watchState == WatchState.Running) {
-            stopCount()
+    fun watchAction() {
+        when (watchState) {
+            WatchState.Stopped -> {
+                startCount()
+            }
+            WatchState.Running -> {
+                stopCount()
+            }
         }
     }
 
-    private fun startCount(){
+    private fun startCount() {
         watchState = WatchState.Running
         Log.d(TAG, "Count Started")
     }
 
-    private fun stopCount(){
+    private fun stopCount() {
         watchState = WatchState.Stopped
         Log.d(TAG, "Count Stopped")
     }
