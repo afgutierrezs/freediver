@@ -31,22 +31,27 @@ class MainActivity : AppCompatActivity() {
             when (viewModel.watchState) {
                 WatchState.Stopped -> {
                     chronometer.base = SystemClock.elapsedRealtime()
+                    progressBar.progress = 0
                     chronometer.start()
                     viewModel.watchState = WatchState.Running
+                    playButton.background = getDrawable(R.drawable.ic_stop_circle_ripple)
                 }
                 WatchState.Running -> {
                     chronometer.stop()
                     viewModel.watchState = WatchState.Stopped
+                    playButton.background = getDrawable(R.drawable.ic_play_circle_ripple)
                 }
             }
         }
 
         initProgressBar()
+        chronometer.setOnChronometerTickListener {
+            progressBar.progress =  ((it.base * 1000) % 60).toInt()
+        }
     }
 
     private fun initProgressBar() {
         progressBar.max = 60
     }
-
-
+    
 }

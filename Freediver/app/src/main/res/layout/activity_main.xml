@@ -51,6 +51,16 @@
             app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
         <Button
+            android:id="@+id/stopButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="32dp"
+            android:visibility="gone"
+            android:background="@drawable/ic_stop_circle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+
+        <Button
             android:id="@+id/contractionsButton"
             android:layout_width="60dp"
             android:layout_height="60dp"

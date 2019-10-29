@@ -12,6 +12,7 @@ class MainActivityViewModel : ViewModel() {
 
     var watchState = WatchState.Stopped
 
+
     init {
         Log.d(TAG, "MainActivityViewModel created!")
     }
