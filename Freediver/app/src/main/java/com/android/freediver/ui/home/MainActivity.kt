@@ -2,6 +2,8 @@ package com.android.freediver.ui.home
 
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
+import android.widget.Chronometer
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
@@ -44,14 +46,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        initProgressBar()
+        progressBar.max = 60
         chronometer.setOnChronometerTickListener {
-            progressBar.progress =  ((it.base * 1000) % 60).toInt()
+            updateProgressBar(it)
         }
     }
 
-    private fun initProgressBar() {
-        progressBar.max = 60
+    private fun updateProgressBar(chronometer: Chronometer) {
+        val systemCurrTime = SystemClock.elapsedRealtime()
+        val chronometerBaseTime = chronometer.base
+        val deltaTime = systemCurrTime - chronometerBaseTime
+        progressBar.progress =  ((deltaTime / 1000) % 60).toInt()
+        Log.d(TAG, "Tick $deltaTime")
     }
-    
 }
