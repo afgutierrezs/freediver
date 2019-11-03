@@ -1,5 +1,6 @@
 package com.android.freediver.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.android.freediver.model.BestTime
 
@@ -22,8 +23,8 @@ interface BestTimeDao {
     fun clear()
 
     @Query("SELECT * FROM BestTime ORDER BY bestTimeId DESC")
-    fun getAll()
+    fun getAll() : LiveData<List<BestTime>>
 
     @Query("SELECT * FROM BestTime ORDER BY duration DESC LIMIT 1")
-    fun getCurrentBestTime()
+    fun getCurrentBestTime() : BestTime?
 }

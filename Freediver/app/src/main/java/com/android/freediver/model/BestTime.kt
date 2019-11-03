@@ -10,17 +10,17 @@ data class BestTime (
     val bestTimeId : Long = 0L,
 
     @ColumnInfo
-    var duration: Long,
+    var duration: Long = 0L,
 
     @ColumnInfo
-    var contractionsStart: Long,
+    var contractionsStart: Long = 0L,
 
     @ColumnInfo
-    var pulseData : Long,
+    var pulseData : Long = 0L,
 
     @ColumnInfo
-    var notes : String,
+    var notes : String = "",
 
     @ColumnInfo
-    var date: Long
+    var date: Long = 0L
 )

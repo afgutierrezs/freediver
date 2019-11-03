@@ -1,9 +1,12 @@
 package com.android.freediver.database
 
 import android.content.Context
+import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.android.freediver.model.BestTime
 
+@Database(entities = [BestTime::class], version = 1, exportSchema = false)
 abstract class FreediverDatabase : RoomDatabase() {
 
     abstract val bestTimeDao: BestTimeDao
