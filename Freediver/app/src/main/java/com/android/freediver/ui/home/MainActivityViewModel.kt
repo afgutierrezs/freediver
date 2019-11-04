@@ -1,8 +1,13 @@
 package com.android.freediver.ui.home
 
+import android.os.SystemClock
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.android.freediver.util.WatchState
+import com.android.freediver.model.BestTime
+import com.android.freediver.util.ChronometerState
+import com.android.freediver.util.Constants.Companion.BEST_TIME_PROGRESSBAR_MAX_VALUE
+import com.android.freediver.util.SingleLiveEvent
+import java.util.concurrent.TimeUnit
 
 class MainActivityViewModel : ViewModel() {
 
@@ -10,8 +15,13 @@ class MainActivityViewModel : ViewModel() {
         private val TAG = MainActivityViewModel::class.java.simpleName
     }
 
-    var watchState = WatchState.Stopped
+    val startCountEvent = SingleLiveEvent<Boolean>()
+    val stopCountEvent = SingleLiveEvent<Boolean>()
 
+    var chronometerState = ChronometerState.Stopped
+    var chronometerMaxValue = BEST_TIME_PROGRESSBAR_MAX_VALUE
+    var bestTimeDuration = 0L
+    var contractionsStartTime = 0L
 
     init {
         Log.d(TAG, "MainActivityViewModel created!")
@@ -22,25 +32,48 @@ class MainActivityViewModel : ViewModel() {
         Log.d(TAG, "MainActivityViewModel destroyed!")
     }
 
-    fun watchAction() {
-        when (watchState) {
-            WatchState.Stopped -> {
+    fun chronometerAction() {
+        when (chronometerState) {
+            ChronometerState.Stopped -> {
                 startCount()
             }
-            WatchState.Running -> {
+            ChronometerState.Running -> {
                 stopCount()
             }
         }
     }
 
     private fun startCount() {
-        watchState = WatchState.Running
+        chronometerState = ChronometerState.Running
+        startCountEvent.value = true
         Log.d(TAG, "Count Started")
     }
 
     private fun stopCount() {
-        watchState = WatchState.Stopped
+        chronometerState = ChronometerState.Stopped
+        stopCountEvent.value = true
         Log.d(TAG, "Count Stopped")
+    }
+
+    fun saveBestTimeOnDataBase() {
+        val bestTime = BestTime()
+    }
+
+    fun parseMillisToStringFormat(millis: Long): String {
+        return String.format(
+            "%02d:%02d",
+            TimeUnit.MILLISECONDS.toMinutes(millis) % TimeUnit.HOURS.toMinutes(1),
+            TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1)
+        )
+    }
+
+    fun parseMillisToSeconds(millis: Long): Int {
+        return  ((millis / 1000) % 60).toInt()
+    }
+
+    fun getDeltaTime(chronometerBaseTime: Long): Long {
+        val systemCurrentTime = SystemClock.elapsedRealtime()
+        return systemCurrentTime - chronometerBaseTime
     }
 
 }

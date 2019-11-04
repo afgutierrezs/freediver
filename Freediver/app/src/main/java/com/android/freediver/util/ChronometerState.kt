@@ -1,5 +1,5 @@
 package com.android.freediver.util
 
-enum class WatchState {
+enum class ChronometerState {
     Running, Stopped
 }
