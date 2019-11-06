@@ -1,35 +1,50 @@
-package com.android.freediver.ui.home
+package com.android.freediver.ui.besttime
 
+import android.app.Application
 import android.os.SystemClock
 import android.util.Log
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import com.android.freediver.database.FreediverDatabase
 import com.android.freediver.model.BestTime
 import com.android.freediver.util.ChronometerState
 import com.android.freediver.util.Constants.Companion.BEST_TIME_PROGRESSBAR_MAX_VALUE
 import com.android.freediver.util.SingleLiveEvent
 import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.*
 
-class MainActivityViewModel : ViewModel() {
+
+class BestTimeViewModel(application: Application) : AndroidViewModel(application) {
 
     companion object {
-        private val TAG = MainActivityViewModel::class.java.simpleName
+        private val TAG = BestTimeViewModel::class.java.simpleName
     }
 
     val startCountEvent = SingleLiveEvent<Boolean>()
     val stopCountEvent = SingleLiveEvent<Boolean>()
+    val currentBestTimeUpdated = SingleLiveEvent<Boolean>()
 
     var chronometerState = ChronometerState.Stopped
     var chronometerMaxValue = BEST_TIME_PROGRESSBAR_MAX_VALUE
     var bestTimeDuration = 0L
     var contractionsStartTime = 0L
 
+    val bestTimeDao = FreediverDatabase.getInstance(application).bestTimeDao
+    private var viewModelJob = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+    var currentBestTime = BestTime()
+
+
     init {
-        Log.d(TAG, "MainActivityViewModel created!")
+        queryCurrentBestTime()
+        Log.d(TAG, "BestTimeViewModel created!")
     }
 
     override fun onCleared() {
         super.onCleared()
-        Log.d(TAG, "MainActivityViewModel destroyed!")
+        viewModelJob.cancel()
+        Log.d(TAG, "BestTimeViewModel destroyed!")
     }
 
     fun chronometerAction() {
@@ -55,8 +70,30 @@ class MainActivityViewModel : ViewModel() {
         Log.d(TAG, "Count Stopped")
     }
 
+
     fun saveBestTimeOnDataBase() {
-        val bestTime = BestTime()
+        uiScope.launch {
+            val bestTime = BestTime()
+            bestTime.duration = bestTimeDuration
+            bestTime.contractionsStart = contractionsStartTime
+            bestTime.date = System.currentTimeMillis()
+            bestTimeDao.insert(bestTime)
+            queryCurrentBestTime()
+        }
+    }
+
+    private fun queryCurrentBestTime() {
+        uiScope.launch {
+            val time = bestTimeDao.getCurrentBestTime()
+            if (time != null) {
+                currentBestTime = time
+                currentBestTimeUpdated.value = true
+            }
+        }
+    }
+
+    fun getCurrentBestTimeDuration() : String {
+        return parseMillisToStringFormat(currentBestTime.duration)
     }
 
     fun parseMillisToStringFormat(millis: Long): String {

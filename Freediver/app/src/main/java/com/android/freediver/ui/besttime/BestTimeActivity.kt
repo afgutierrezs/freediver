@@ -1,9 +1,10 @@
-package com.android.freediver.ui.home
+package com.android.freediver.ui.besttime
 
 import android.content.DialogInterface
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -11,35 +12,44 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.android.freediver.R
-import com.android.freediver.databinding.ActivityMainBinding
-import kotlinx.android.synthetic.main.activity_main.*
+import com.android.freediver.databinding.ActivityBestTimeBinding
+import kotlinx.android.synthetic.main.activity_best_time.*
 
 
-class MainActivity : AppCompatActivity() {
+class BestTimeActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: MainActivityViewModel
+    private lateinit var binding: ActivityBestTimeBinding
+    private lateinit var viewModel: BestTimeViewModel
 
     companion object {
-        private val TAG = MainActivity::class.java.simpleName
+        private val TAG = BestTimeActivity::class.java.simpleName
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_best_time)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-        viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(BestTimeViewModel::class.java)
 
         binding.playButton.setOnClickListener {
             viewModel.chronometerAction()
+            viewModel.bestTimeDuration = viewModel.getDeltaTime(chronometer.base)
         }
 
-        progressBar.max = viewModel.chronometerMaxValue
-        chronometer.setOnChronometerTickListener {
+        binding.contractionsButton.setOnClickListener {
+            viewModel.contractionsStartTime = viewModel.getDeltaTime(chronometer.base)
+        }
+
+        binding.progressBar.max = viewModel.chronometerMaxValue
+        binding.chronometer.setOnChronometerTickListener {
             updateProgressBar(it.base)
         }
+
+        viewModel.currentBestTimeUpdated.observe(this, Observer {
+            binding.bestTimeTextView.text = getString(R.string.best, viewModel.getCurrentBestTimeDuration())
+        })
 
         viewModel.startCountEvent.observe(this, Observer {
             startChronometer()
