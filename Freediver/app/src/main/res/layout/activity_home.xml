@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.home.HomeActivity">
+
+    <Button
+        android:id="@+id/bestTimeButton"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:background="@color/secondaryColor"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:text="Best Time"
+        app:layout_constraintBottom_toTopOf="@+id/co2Button"
+        app:layout_constraintEnd_toStartOf="@+id/squareBreathButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/squareBreathButton"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:background="@color/secondaryColor"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:text="Square Breath"
+        app:layout_constraintBottom_toTopOf="@+id/settingsButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/bestTimeButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/co2Button"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:background="@color/secondaryColor"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:text="CO2 Table"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/settingsButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bestTimeButton" />
+
+    <Button
+        android:id="@+id/settingsButton"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:background="@color/secondaryColor"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:text="Settings"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/co2Button"
+        app:layout_constraintTop_toBottomOf="@+id/squareBreathButton" />
+</androidx.constraintlayout.widget.ConstraintLayout>

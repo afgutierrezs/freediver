@@ -1,6 +1,8 @@
 package com.android.freediver.ui.besttime
 
 import android.content.DialogInterface
+import android.content.res.Configuration
+import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
