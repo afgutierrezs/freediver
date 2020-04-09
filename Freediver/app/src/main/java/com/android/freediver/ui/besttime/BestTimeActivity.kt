@@ -1,8 +1,6 @@
 package com.android.freediver.ui.besttime
 
 import android.content.DialogInterface
-import android.content.res.Configuration
-import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
@@ -35,7 +33,7 @@ class BestTimeActivity : AppCompatActivity() {
 
         viewModel = ViewModelProviders.of(this).get(BestTimeViewModel::class.java)
 
-        binding.playButton.setOnClickListener {
+        binding.startButton.setOnClickListener {
             viewModel.chronometerAction()
             viewModel.bestTimeDuration = viewModel.getDeltaTime(chronometer.base)
         }
@@ -66,12 +64,12 @@ class BestTimeActivity : AppCompatActivity() {
         chronometer.base = SystemClock.elapsedRealtime()
         progressBar.progress = 0
         chronometer.start()
-        playButton.background = getDrawable(R.drawable.ic_stop_circle_ripple)
+        start_button.background = getDrawable(R.drawable.ic_stop_circle_ripple)
     }
 
     private fun stopChronometer() {
         chronometer.stop()
-        playButton.background = getDrawable(R.drawable.ic_play_circle_ripple)
+        start_button.background = getDrawable(R.drawable.ic_play_circle_ripple)
         displayAlertDialogSaveData()
     }
     private fun clearUi() {
