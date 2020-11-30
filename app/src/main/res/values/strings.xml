@@ -2,4 +2,14 @@
     <string name="app_name">Freediver</string>
     <string name="preparation_time">00:10</string>
     <string name="best">Best %1$s</string>
+
+    <!-- Notifications -->
+    <string name="time_up">Time up</string>
+    <string name="timer_running">Timer is running</string>
+    <string name="co2_notification_title">Freediver</string>
+    <string name="co2_notification_text">Timer is running</string>
+    <string name="co2_table_notification_channel_id" translatable="false">co2_channel</string>
+    <string name="co2_table_notification_channel_name" translatable="true">co2_table</string>
+    <string name="co2_channel_description">CO2 table reminder</string>
+    <string name="snooze">Snooze</string>
 </resources>

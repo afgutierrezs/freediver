@@ -4,10 +4,9 @@ import android.app.Application
 import android.os.SystemClock
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import com.android.freediver.database.FreediverDatabase
 import com.android.freediver.model.BestTime
-import com.android.freediver.util.ChronometerState
+import com.android.freediver.util.chronometer.ChronometerState
 import com.android.freediver.util.Constants.Companion.BEST_TIME_PROGRESSBAR_MAX_VALUE
 import com.android.freediver.util.SingleLiveEvent
 import java.util.concurrent.TimeUnit

@@ -6,15 +6,11 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import com.android.freediver.model.CO2Table
 import com.android.freediver.model.Row
-import com.android.freediver.util.ChronometerAction
-import com.android.freediver.util.ChronometerState
+import com.android.freediver.util.chronometer.ChronometerAction
+import com.android.freediver.util.chronometer.ChronometerState
 import com.android.freediver.util.Constants
 import com.android.freediver.util.SingleLiveEvent
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlin.concurrent.thread
+import kotlinx.coroutines.*
 
 class CO2TableViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -22,6 +18,8 @@ class CO2TableViewModel(application: Application) : AndroidViewModel(application
         private val TAG = CO2TableViewModel::class.java.simpleName
     }
 
+
+    lateinit var chronometerJob : Job
     val startCountEvent = SingleLiveEvent<Boolean>()
     val stopCountEvent = SingleLiveEvent<Boolean>()
     val pauseCountEvent = SingleLiveEvent<Boolean>()
@@ -45,7 +43,7 @@ class CO2TableViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun loadDefaultTable() {
-        rows = createTableFromBestTime(120, 65).rows.toMutableList()
+        rows = createTableFromBestTime(40, 60).rows.toMutableList()
     }
 
     fun chronometerAction(action: ChronometerAction) {
@@ -66,16 +64,19 @@ class CO2TableViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun startTable() {
-        GlobalScope.launch(context = Dispatchers.Main) {
+        chronometerJob = GlobalScope.launch(context = Dispatchers.Main) {
             for (item in rows) {
                 startCount(item.hold)
                 delay(item.hold * 1000L)
-                stopCount()
                 startCount(item.breath)
                 delay(item.breath * 1000L)
                 stopCount()
             }
         }
+    }
+
+    fun cancelTable(){
+        chronometerJob.cancel()
     }
 
     private fun startCount(maxValue: Int) {

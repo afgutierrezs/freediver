@@ -1,13 +1,11 @@
 package com.android.freediver
 
-import android.util.Log
 import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.freediver.database.BestTimeDao
 import com.android.freediver.database.FreediverDatabase
 import com.android.freediver.model.BestTime
 import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertNotNull
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
