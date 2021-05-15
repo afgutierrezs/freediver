@@ -89,6 +89,11 @@ class CO2TableActivity : AppCompatActivity() {
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        notificationManager.cancelNotifications()
+    }
+
     private fun startChronometer() {
         chronometer.base = SystemClock.elapsedRealtime()
         progressBar.progress = 0

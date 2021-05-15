@@ -59,7 +59,7 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
 
         .setContentIntent(contentPendingIntent)
         .setAutoCancel(false)
-        .setOngoing(true)
+        .setOngoing(false)
 
         .setStyle(bigPicStyle)
         .setLargeIcon(freediverNotificationImage)
