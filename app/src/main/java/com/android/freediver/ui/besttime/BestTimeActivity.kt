@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.android.freediver.R
 import com.android.freediver.databinding.ActivityBestTimeBinding
@@ -31,7 +32,7 @@ class BestTimeActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_best_time)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-        viewModel = ViewModelProviders.of(this).get(BestTimeViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(BestTimeViewModel::class.java)
 
         binding.startButton.setOnClickListener {
             viewModel.chronometerAction()

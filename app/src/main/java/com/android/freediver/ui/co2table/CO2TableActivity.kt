@@ -1,5 +1,10 @@
 package com.android.freediver.ui.co2table
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.graphics.Color
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
@@ -7,10 +12,13 @@ import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.android.freediver.R
 import com.android.freediver.databinding.ActivityCo2TableBinding
-import com.android.freediver.util.ChronometerAction
+import com.android.freediver.util.chronometer.ChronometerAction
+import com.android.freediver.util.notifications.cancelNotifications
+import com.android.freediver.util.notifications.sendNotification
 import kotlinx.android.synthetic.main.activity_best_time.chronometer
 import kotlinx.android.synthetic.main.activity_best_time.progressBar
 
@@ -19,11 +27,12 @@ class CO2TableActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCo2TableBinding
     private lateinit var viewModel: CO2TableViewModel
     private lateinit var adapter: RowAdapter
+    private lateinit var  notificationManager: NotificationManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_co2_table)
-        viewModel = ViewModelProviders.of(this).get(CO2TableViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(CO2TableViewModel::class.java)
 
         adapter = RowAdapter(viewModel, this)
         binding.rowRecyclerView.adapter = adapter
@@ -41,6 +50,7 @@ class CO2TableActivity : AppCompatActivity() {
         }
 
         binding.stopButton.setOnClickListener {
+            viewModel.cancelTable()
             viewModel.chronometerAction(ChronometerAction.Stop)
         }
 
@@ -72,6 +82,16 @@ class CO2TableActivity : AppCompatActivity() {
             binding.progressBar.max = viewModel.chronometerMaxValue
         })
 
+        createNotificationChannel(
+            getString(R.string.co2_table_notification_channel_id),
+            getString(R.string.co2_table_notification_channel_name)
+        )
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        notificationManager.cancelNotifications()
     }
 
     private fun startChronometer() {
@@ -81,6 +101,7 @@ class CO2TableActivity : AppCompatActivity() {
         binding.startButton.visibility = View.GONE
         binding.stopButton.visibility = View.VISIBLE
         binding.pauseButton.visibility = View.VISIBLE
+        notificationManager.sendNotification(getString(R.string.timer_running), this)
     }
 
     private fun stopChronometer() {
@@ -90,6 +111,7 @@ class CO2TableActivity : AppCompatActivity() {
         binding.resumeButton.visibility = View.GONE
         binding.startButton.visibility = View.VISIBLE
         clearUi()
+        notificationManager.cancelNotifications()
     }
 
     private fun pauseChronometer() {
@@ -113,5 +135,26 @@ class CO2TableActivity : AppCompatActivity() {
         val deltaTime = viewModel.getDeltaTime(chronometerBaseTime)
         progressBar.progress = viewModel.parseMillisToSeconds(deltaTime)
         Log.d("PRG", "Progress ${viewModel.parseMillisToSeconds(deltaTime)}")
+    }
+
+    private fun createNotificationChannel(channelId: String, channelName: String) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel(
+                channelId,
+                channelName,
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                    setShowBadge(false)
+                }
+
+            notificationChannel.enableLights(true)
+            notificationChannel.lightColor = Color.BLUE
+            notificationChannel.enableVibration(true)
+            notificationChannel.description = getString(R.string.co2_channel_description)
+
+            notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
     }
 }
