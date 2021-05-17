@@ -6,69 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeActivity">
 
-    <Button
-        android:id="@+id/bestTimeButton"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:background="@color/secondaryColor"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        android:text="Best Time"
-        app:layout_constraintBottom_toTopOf="@+id/co2Button"
-        app:layout_constraintEnd_toStartOf="@+id/squareBreathButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/squareBreathButton"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:background="@color/secondaryColor"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        android:text="Square Breath"
-        app:layout_constraintBottom_toTopOf="@+id/settingsButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/bestTimeButton"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/co2Button"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:background="@color/secondaryColor"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        android:text="CO2 Table"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/settingsButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bestTimeButton" />
-
-    <Button
-        android:id="@+id/settingsButton"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:background="@color/secondaryColor"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        android:text="Settings"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/co2Button"
-        app:layout_constraintTop_toBottomOf="@+id/squareBreathButton" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/home_navigation_graph" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
+        android:id="@+id/bottomNavigationView"
         style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_navigation_menu" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

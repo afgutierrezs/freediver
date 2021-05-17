@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_navigation_graph"
+    app:startDestination="@id/trainingFragment">
+
+    <fragment
+        android:id="@+id/trainingFragment"
+        android:name="com.android.freediver.ui.training.TrainingFragment"
+        android:label="@string/training"
+        tools:layout="@layout/fragment_training" />
+    <fragment
+        android:id="@+id/discoverFragment"
+        android:name="com.android.freediver.ui.discover.DiscoverFragment"
+        android:label="@string/discover"
+        tools:layout="@layout/fragment_discover" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.android.freediver.ui.profile.ProfileFragment"
+        android:label="@string/profile"
+        tools:layout="@layout/fragment_profile" />
+</navigation>
