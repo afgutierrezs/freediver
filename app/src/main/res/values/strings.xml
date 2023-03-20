@@ -12,4 +12,13 @@
     <string name="co2_table_notification_channel_name" translatable="true">co2_table</string>
     <string name="co2_channel_description">CO2 table reminder</string>
     <string name="snooze">Snooze</string>
+
+    <!-- Activities and Fragments names -->
+    <string name="best_time">Best Time</string>
+    <string name="square_breath">Square Breath</string>
+    <string name="co2_table">CO2 Table</string>
+    <string name="settings">Settings</string>
+    <string name="training">Training</string>
+    <string name="discover">Discover</string>
+    <string name="profile">Profile</string>
 </resources>
